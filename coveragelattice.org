@@ -1,0 +1,40 @@
+Given two coverage traces that track , how can we compare them?[fn:1]
+
+This generates a lattice on the coverage traces. One trace can be
+strictly greater than another, equal to it, strictly less than it, or
+incomparable.
+
+However, when using AFL style tracing, the two traces can differ in
+the actual locations[fn:2] visited, or in how many times they visited
+each of those locations. Assume that we have a baseline of
+coverage. Not all strictly greater traces are equally interesting. If
+one trace hits some location more than the baseline, while another
+visits an entirely new location, both are improvements, but the second
+is intuitively a stronger improvement.
+
+~coveragelattice.dot~ and ~coveragelattice.png~ contain the ordering
+of these comparisons. 
+
+The four T/F values represented are[fn:3]:
+    1. whether some locations were seen in the first record, but not
+       the second
+    2. whether some locations were seen more often in the first record
+       than in the second
+    3. whether some locations were seen less often in the first record
+       than in the second
+    4. whether some locations were seen in the second record, but not
+       the first
+
+So TTFF represents the case where the first record has seen locations
+the second hasn't, while FTFF represents merely seeing some branch
+more often. 
+
+[fn:1] This is all speculative--I haven't verified that there's any
+value in making these distinctions.
+
+[fn:2] A location might be a line, or a the xor'd value representing
+the previous location and the current location (as in AFL).
+
+[fn:3] Note that 1 implies 2 and 4 implies 3, so only 9 values are
+present in the lattice.
+

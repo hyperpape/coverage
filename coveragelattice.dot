@@ -1,0 +1,36 @@
+
+
+digraph {
+
+	rankdir = TB;
+	TTFF -> FTFF;
+	TTFF -> TTTF;
+	TTTF -> TTTT;
+	TTTT -> FTTT;
+	FTTT -> FFTT;
+	FTFF -> FFFF;
+	FTFF -> FTTF;
+	FTTF -> FFTF;
+	FFFF -> FFTF;
+	FFTF -> FFTT;
+
+	subgraph cluster_sg {
+	    label= "strictly greater";
+	    rank= same ; TTFF; FTFF; 
+	}
+
+	subgraph cluster_sl {
+	    label = "strictly lesser"
+	    rank= same ;FFTT; FFTF;
+	}
+
+	subgraph cluster_incomp {
+	    label = "incomparable";
+	    rank= same; TTTT; FTTF; TTTF; FTTT;
+	}
+
+	subgraph cluster_equal {
+	    label = "equal";
+	    rank= same ; FFFF;
+	}
+}
