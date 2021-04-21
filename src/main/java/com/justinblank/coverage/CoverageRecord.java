@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 public class CoverageRecord {
 
-    final int[] coverage;
+    final short[] coverage;
 
     public CoverageRecord() {
         byte[] coverageCopy = Arrays.copyOf(BranchCoverage.BRANCHES, BranchCoverage.BRANCHES.length);
@@ -15,10 +15,10 @@ public class CoverageRecord {
                 seen++;
             }
         }
-        this.coverage = new int[seen * 2];
+        this.coverage = new short[seen * 2];
 
-        var coverageIdx = 0;
-        for (var i = 0; i < coverageCopy.length; i++) {
+        short coverageIdx = 0;
+        for (short i = 0; i < coverageCopy.length; i++) {
             if (coverageCopy[i] != 0) {
                 coverage[coverageIdx++] = i;
                 coverage[coverageIdx++] = coverageCopy[i];
@@ -26,7 +26,7 @@ public class CoverageRecord {
         }
     }
 
-    CoverageRecord(int[] bytes) {
+    CoverageRecord(short[] bytes) {
         coverage = bytes;
     }
 
@@ -63,6 +63,8 @@ public class CoverageRecord {
             if (thisNextBranch == otherNextBranch) {
                 var thisBranchCount = coverage[++thisIdx];
                 var otherBranchCount = other.coverage[++otherIdx];
+                // This is a slight difference from the AFL algorithm, which treats 32-127 hits at the same bucket.
+                // I have no reason to believe this is better, but it doesn't require a special case there easier.
                 if (thisBranchCount >= otherBranchCount * 2) {
                     hasBranchOtherLacks = true;
                 }
