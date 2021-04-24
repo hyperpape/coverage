@@ -118,5 +118,24 @@ public class CoverageRecord {
         }
         return hashCode;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o instanceof CoverageRecord) {
+            var other = (CoverageRecord) o;
+            return Arrays.equals(this.coverage, other.coverage);
+        }
+        return false;
+    }
+
+    @Override
+    public String toString() {
+        return "CoverageRecord{" +
+                "coverage=" + Arrays.toString(coverage) +
+                '}';
+    }
 }
 
