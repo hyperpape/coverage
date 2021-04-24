@@ -24,25 +24,22 @@ public class CoverageRecordTest {
     @Test
     public void testGreaterThanDifferentOrders() {
         var record1 = new CoverageRecord(new short[]{1, 2, 3, 4});
-        var record2 = new CoverageRecord(new short[]{2, 3, 4, 5});
+        var record2 = new CoverageRecord(new short[]{2, 4, 4, 8});
         assertIncomparable(record1, record2);
     }
 
     @Test
     public void testGreaterThanAdditionalBranches() {
         var record1 = new CoverageRecord(new short[]{1, 2, 3, 4});
-        var record2 = new CoverageRecord(new short[]{1, 2, 3, 4, 5, 6});
+        var record2 = new CoverageRecord(new short[]{1, 2, 3, 4, 5, 8});
         assertGreater(record1, record2);
     }
 
     @Test
     public void testGreaterThanAdditionalHits() {
         var record1 = new CoverageRecord(new short[]{1, 2, 3, 4});
-        var record2 = new CoverageRecord(new short[]{1, 4, 3, 6});
+        var record2 = new CoverageRecord(new short[]{1, 4, 3, 4});
         assertGreater(record1, record2);
-
-        var record3 = new CoverageRecord(new short[]{1, 3, 3, 5});
-        assertFalse(record3.greaterThan(record1));
     }
 
     @Test
@@ -87,5 +84,4 @@ public class CoverageRecordTest {
 
         assertTrue(record2.differsFrom(record1));
     }
-
 }

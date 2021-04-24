@@ -4,7 +4,8 @@ import java.util.Arrays;
 
 public class CoverageRecord {
 
-    final short[] coverage;
+    private final short[] coverage;
+    private int hashCode;
 
     public CoverageRecord() {
         byte[] coverageCopy = Arrays.copyOf(BranchCoverage.BRANCHES, BranchCoverage.BRANCHES.length);
@@ -21,7 +22,7 @@ public class CoverageRecord {
         for (short i = 0; i < coverageCopy.length; i++) {
             if (coverageCopy[i] != 0) {
                 coverage[coverageIdx++] = i;
-                coverage[coverageIdx++] = coverageCopy[i];
+                coverage[coverageIdx++] = asPowOfTwo(coverageCopy[i]);
             }
         }
     }
@@ -39,7 +40,6 @@ public class CoverageRecord {
         // This is a partial order: we need to know whether we've seen some branches more than the other guy, but also
         // vice versa.
         boolean hasBranchOtherLacks = false;
-        boolean lacksBranchOtherHas = false;
 
         // Short-circuit on the easy case
         if (coverage.length < other.coverage.length) {
@@ -63,12 +63,10 @@ public class CoverageRecord {
             if (thisNextBranch == otherNextBranch) {
                 var thisBranchCount = coverage[++thisIdx];
                 var otherBranchCount = other.coverage[++otherIdx];
-                // This is a slight difference from the AFL algorithm, which treats 32-127 hits at the same bucket.
-                // I have no reason to believe this is better, but it doesn't require a special case there easier.
-                if (thisBranchCount >= otherBranchCount * 2) {
+                if (thisBranchCount > otherBranchCount ) {
                     hasBranchOtherLacks = true;
                 }
-                else if (thisBranchCount * 2 <= otherBranchCount) {
+                else if (thisBranchCount < otherBranchCount) {
                     return false;
                 }
                 thisIdx++;
@@ -100,8 +98,25 @@ public class CoverageRecord {
         return false;
     }
 
+    /* https://stackoverflow.com/a/15525769 */
+    /* returns greatest power of 2 less than or equal to x, branch-free */
+    /* Source: Hacker's Delight, First Edition. */
+    // This is a slight difference from the AFL algorithm, which treats 32-127 hits at the same bucket.
+    // I have no reason to believe this is better, but it doesn't require a special case there easier.
+    short asPowOfTwo(int x) {
+        x = x | (x>>1);
+        x = x | (x>>2);
+        x = x | (x>>4);
+        x = x | (x>>8);
+        return (short) (x - (x>>1));
+    }
+
+    @Override
     public int hashCode() {
-        return Arrays.hashCode(coverage);
+        if (hashCode == 0) {
+            hashCode = Arrays.hashCode(coverage);
+        }
+        return hashCode;
     }
 }
 
