@@ -14,6 +14,7 @@ public class CoverageAgent {
 
     private static Predicate<String> shouldTransform = startsWith("org/quicktheories/")
             .or(startsWith("com/justinblank/coverage"))
+            .or(startsWith("com/justinblank/minithesis"))
             .or(startsWith("jdk/"))
             .or(startsWith("java/"))
             .or(startsWith("javafx/"))
