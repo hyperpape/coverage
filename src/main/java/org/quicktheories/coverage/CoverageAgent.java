@@ -13,8 +13,10 @@ import java.util.function.Predicate;
 public class CoverageAgent {
 
     private static Predicate<String> shouldTransform = startsWith("org/quicktheories/")
+            .or(startsWith("org/junit"))
             .or(startsWith("com/justinblank/coverage"))
             .or(startsWith("com/justinblank/minithesis"))
+            // jdk stuff below
             .or(startsWith("jdk/"))
             .or(startsWith("java/"))
             .or(startsWith("javafx/"))
