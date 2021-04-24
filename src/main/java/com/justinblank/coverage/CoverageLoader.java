@@ -1,16 +1,16 @@
-package com.justinblank.coverage.examples;
+package com.justinblank.coverage;
 
 import net.bytebuddy.agent.ByteBuddyAgent;
 import org.quicktheories.coverage.ClassloaderByteArraySource;
 import org.quicktheories.coverage.Installer;
 
-public class Loader {
+public class CoverageLoader {
 
     private static volatile boolean loaded = false;
 
     public static void init() {
         if (!loaded) {
-            synchronized (Loader.class) {
+            synchronized (CoverageLoader.class) {
                 if (!loaded) {
                     try {
                         Installer in = new Installer(new ClassloaderByteArraySource(Thread.currentThread().getContextClassLoader()));
@@ -23,6 +23,9 @@ public class Loader {
                 }
             }
         }
+    }
 
+    public static boolean isLoaded() {
+        return loaded;
     }
 }

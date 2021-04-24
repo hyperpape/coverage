@@ -2,6 +2,7 @@ package com.justinblank.coverage.examples;
 
 import com.justinblank.coverage.BranchCoverage;
 import com.justinblank.coverage.CoverageRecord;
+import com.justinblank.coverage.CoverageLoader;
 import com.justinblank.examples.Example;
 import org.junit.jupiter.api.Test;
 
@@ -12,7 +13,7 @@ public class TestExampleCoverage {
 
     @Test
     public void testExampleTest() {
-        Loader.init();
+        CoverageLoader.init();
         // Make sure classes are loaded to avoid contaminating coverage
         var throwawayRecord = new CoverageRecord();
         Example.exampleTest(true, true, true, true, true, true, true, true);
@@ -37,7 +38,7 @@ public class TestExampleCoverage {
 
     @Test
     public void testCollatzCoverage() {
-        Loader.init(); // for side effects
+        CoverageLoader.init(); // for side effects
         Example.collatz(1);
         var throwaway = new CoverageRecord();
         BranchCoverage.clearBranches();
