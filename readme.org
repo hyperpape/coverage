@@ -1,0 +1,13 @@
+* Coverage
+
+An implementation of the [[https://lcamtuf.coredump.cx/afl/technical_details.txt][AFL method of coverage tracking]]. 
+
+Incorporates code from [[https://github.com/quicktheories/QuickTheories][QuickTheories]] for the code necessary to install
+an agent that transforms classes and injects tracking code.
+
+** Notes
+
+Because the instrumentation code and coverage tracking code lives in
+the same process as the target code, certain packages are excluded
+from retransformation and coverage tracking. See CoverageAgent for the
+specific packages.
