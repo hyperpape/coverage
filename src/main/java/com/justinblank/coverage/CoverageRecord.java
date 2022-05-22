@@ -33,8 +33,8 @@ public class CoverageRecord {
 
     /**
      * Return whether this record of coverage is strictly greater than the other.
-     * @param other
-     * @return
+     * @param other a second coverage record
+     * @return true if this record is greater than the other
      */
     public boolean greaterThan(CoverageRecord other) {
         // This is a partial order: we need to know whether we've seen some branches more than the other guy, but also
@@ -134,7 +134,8 @@ public class CoverageRecord {
     @Override
     public String toString() {
         return "CoverageRecord{" +
-                "coverage=" + Arrays.toString(coverage) +
+                "hashCode=" + hashCode() +
+                ", coverage=" + Arrays.toString(coverage) +
                 '}';
     }
 }
